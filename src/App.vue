@@ -1,11 +1,20 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { login } from './api'
+
+const email = ref<string>('')
+const password = ref<string>('')
+
+const onSubmit = async () => {
+  const data = await login(email.value, password.value)
+  console.log(data)
+}
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <form action="" @submit.prevent="onSubmit">
+    <input v-model="email" type="email" placeholder="Adresse email" />
+    <input v-model="password" type="password" placeholder="Mot de passe" />
+    <input type="submit" value="Se connecter" />
+  </form>
 </template>
-
-<style scoped></style>

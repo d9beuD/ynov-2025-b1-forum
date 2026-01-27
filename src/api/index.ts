@@ -1,15 +1,26 @@
 import type { HydraContext } from '@/types/api'
 import type { User } from '@/types/user'
 
-const baseURL = 'localhost:8000/api'
+const baseURL = 'http://localhost:8000/api'
 
 export class instance {
   jwt: string | null = null
 
   fetch = (input: RequestInfo | URL, init: RequestInit = {}) => {
     if (this.jwt) {
-      init = Object.assign<RequestInit, RequestInit>(init, { headers: { Authorization: this.jwt } })
+      init.headers = Object.assign<Required<RequestInit>['headers'], RequestInit['headers']>(
+        init.headers ?? {},
+        { Authorization: this.jwt },
+      )
     }
+
+    init.headers = Object.assign<Required<RequestInit>['headers'], RequestInit['headers']>(
+      init.headers ?? {},
+      {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    )
 
     return fetch(`${baseURL}${input}`, init)
   }

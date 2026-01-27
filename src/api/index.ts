@@ -29,6 +29,18 @@ export class instance {
     init = Object.assign<RequestInit, RequestInit>(init, { method: 'POST' })
     return this.fetch(input, init)
   }
+
+  get = (input: RequestInfo | URL, init: RequestInit = {}) => this.fetch(input, init)
+
+  patch = (input: RequestInfo | URL, init: RequestInit = {}) => {
+    init = Object.assign<RequestInit, RequestInit>(init, { method: 'PATCH' })
+    return this.fetch(input, init)
+  }
+
+  delete = (input: RequestInfo | URL, init: RequestInit = {}) => {
+    init = Object.assign<RequestInit, RequestInit>(init, { method: 'DELETE' })
+    return this.fetch(input, init)
+  }
 }
 
 export const api = new instance()

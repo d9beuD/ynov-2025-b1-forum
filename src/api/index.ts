@@ -10,7 +10,7 @@ export class instance {
     if (this.jwt) {
       init.headers = Object.assign<Required<RequestInit>['headers'], RequestInit['headers']>(
         init.headers ?? {},
-        { Authorization: this.jwt },
+        { Authorization: `Bearer ${this.jwt}` },
       )
     }
 

@@ -4,22 +4,22 @@ import type { User } from '@/types/user'
 const baseURL = 'http://localhost:8000/api'
 
 export class instance {
-  jwt: string | null = null
+  defaultParams: RequestInit = {
+    credentials: 'include',
+  }
+
+  defaultHeaders: RequestInit['headers'] = {
+    'Content-Type': 'application/json',
+    Accept: 'application/ld+json',
+  }
 
   fetch = (input: RequestInfo | URL, init: RequestInit = {}) => {
-    if (this.jwt) {
-      init.headers = Object.assign<Required<RequestInit>['headers'], RequestInit['headers']>(
-        init.headers ?? {},
-        { Authorization: `Bearer ${this.jwt}` },
-      )
-    }
+    init = Object.assign<object, RequestInit, RequestInit>({}, this.defaultParams, init)
 
-    init.headers = Object.assign<Required<RequestInit>['headers'], RequestInit['headers']>(
+    init.headers = Object.assign<object, Required<RequestInit>['headers'], RequestInit['headers']>(
+      {},
       init.headers ?? {},
-      {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
+      this.defaultHeaders,
     )
 
     return fetch(`${baseURL}${input}`, init)
@@ -50,16 +50,16 @@ export async function getUser(id: number): Promise<HydraContext<User>> {
   return response
 }
 
-export async function login(email: string, password: string): Promise<{ token: string }> {
-  const response = await api
-    .post('/auth', {
-      body: JSON.stringify({ email, password }),
-    })
-    .then((data) => data.json() as unknown as { token: string })
-    .then((data) => {
-      api.jwt = data.token
-      return data
-    })
+export async function login(email: string, password: string): Promise<unknown> {
+  const response = await api.post('/auth', {
+    body: JSON.stringify({ email, password }),
+  })
 
   return response
+}
+
+export function getCurrentUser(): Promise<HydraContext<User>> {
+  return api.get('/users/current').then((data) => data.json()) as unknown as Promise<
+    HydraContext<User>
+  >
 }

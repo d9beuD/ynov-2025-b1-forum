@@ -29,7 +29,8 @@ export class instance {
         }
         return response
       })
-      .then((data) => data.json()) as unknown as Promise<T>
+      .then((data) => data.text())
+      .then((text) => (text.length ? JSON.parse(text) : text)) as unknown as Promise<T>
   }
 
   post = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> => {

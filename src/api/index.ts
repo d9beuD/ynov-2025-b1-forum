@@ -23,6 +23,13 @@ export class instance {
     )
 
     return fetch(`${baseURL}${input}`, init)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(JSON.stringify(response.body))
+        }
+        return response
+      })
+      .then((data) => data.json())
   }
 
   post = (input: RequestInfo | URL, init: RequestInit = {}) => {
@@ -59,7 +66,5 @@ export async function login(email: string, password: string): Promise<unknown> {
 }
 
 export function getCurrentUser(): Promise<HydraContext<User>> {
-  return api.get('/users/current').then((data) => data.json()) as unknown as Promise<
-    HydraContext<User>
-  >
+  return api.get('/users/current') as unknown as Promise<HydraContext<User>>
 }

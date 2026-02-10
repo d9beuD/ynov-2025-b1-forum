@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { login } from '@/api'
+import api from '@/api'
 import { useAuthStore } from '@/stores/auth'
 import type { User } from '@/types/user'
 import { computed, reactive, ref } from 'vue'
@@ -18,7 +18,7 @@ const authStore = useAuthStore()
 const onSubmit = async () => {
   isLoading.value = true
 
-  await login(userForm.email, userForm.password)
+  await api.auth.login(userForm.email, userForm.password)
 
   authStore.loadUser()
   isLoading.value = false

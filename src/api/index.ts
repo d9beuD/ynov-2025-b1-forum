@@ -1,5 +1,5 @@
-import type { HydraContext } from '@/types/api'
-import type { User } from '@/types/user'
+import auth from './auth'
+import users from './users'
 
 const baseURL = 'http://localhost:8000/api'
 
@@ -53,18 +53,7 @@ export class instance {
 
 export const api = new instance()
 
-export function getUser(id: number) {
-  return api.get<HydraContext<User>>('/users/' + id)
-}
-
-export async function login(email: string, password: string): Promise<unknown> {
-  const response = await api.post('/auth', {
-    body: JSON.stringify({ email, password }),
-  })
-
-  return response
-}
-
-export function getCurrentUser() {
-  return api.get<HydraContext<User>>('/users/current')
+export default {
+  auth,
+  users,
 }

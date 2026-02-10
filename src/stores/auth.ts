@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/api'
+import api from '@/api'
 import type { User } from '@/types/user'
 import { defineStore } from 'pinia'
 import { computed, reactive } from 'vue'
@@ -9,7 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = computed(() => getUser(user) !== null)
 
   const loadUser = async () => {
-    const fetchedUser = await getCurrentUser().catch(() => null)
+    const fetchedUser = await api.users.getCurrent().catch(() => null)
 
     if (fetchedUser !== null) {
       Object.assign(user, fetchedUser)

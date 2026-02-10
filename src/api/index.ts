@@ -13,7 +13,7 @@ export class instance {
     Accept: 'application/ld+json',
   }
 
-  fetch = (input: RequestInfo | URL, init: RequestInit = {}) => {
+  fetch = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> => {
     init = Object.assign<object, RequestInit, RequestInit>({}, this.defaultParams, init)
 
     init.headers = Object.assign<object, Required<RequestInit>['headers'], RequestInit['headers']>(
@@ -29,22 +29,23 @@ export class instance {
         }
         return response
       })
-      .then((data) => data.json())
+      .then((data) => data.json()) as unknown as Promise<T>
   }
 
-  post = (input: RequestInfo | URL, init: RequestInit = {}) => {
+  post = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> => {
     init = Object.assign<RequestInit, RequestInit>(init, { method: 'POST' })
     return this.fetch(input, init)
   }
 
-  get = (input: RequestInfo | URL, init: RequestInit = {}) => this.fetch(input, init)
+  get = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> =>
+    this.fetch<T>(input, init)
 
-  patch = (input: RequestInfo | URL, init: RequestInit = {}) => {
+  patch = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> => {
     init = Object.assign<RequestInit, RequestInit>(init, { method: 'PATCH' })
     return this.fetch(input, init)
   }
 
-  delete = (input: RequestInfo | URL, init: RequestInit = {}) => {
+  delete = <T>(input: RequestInfo | URL, init: RequestInit = {}): Promise<T> => {
     init = Object.assign<RequestInit, RequestInit>(init, { method: 'DELETE' })
     return this.fetch(input, init)
   }
@@ -52,9 +53,8 @@ export class instance {
 
 export const api = new instance()
 
-export async function getUser(id: number): Promise<HydraContext<User>> {
-  const response = await api.fetch('/users/' + id).then((data) => data.json())
-  return response
+export function getUser(id: number) {
+  return api.get<HydraContext<User>>('/users/' + id)
 }
 
 export async function login(email: string, password: string): Promise<unknown> {
@@ -65,6 +65,6 @@ export async function login(email: string, password: string): Promise<unknown> {
   return response
 }
 
-export function getCurrentUser(): Promise<HydraContext<User>> {
-  return api.get('/users/current') as unknown as Promise<HydraContext<User>>
+export function getCurrentUser() {
+  return api.get<HydraContext<User>>('/users/current')
 }

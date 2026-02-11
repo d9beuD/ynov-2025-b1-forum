@@ -1,11 +1,11 @@
 import type { HydraContext } from '@/types/api'
-import { api } from '.'
+import { _api } from '.'
 import type { User } from '@/types/user'
 
 export default {
   get: (id: number) => {
-    return api.get<HydraContext<User>>('/users/' + id)
+    return _api.get<HydraContext<User>>('/users/' + id)
   },
 
-  getCurrent: () => api.get<HydraContext<User>>('/users/current'),
+  getCurrent: () => _api.get<HydraContext<User>>('/users/current'),
 }

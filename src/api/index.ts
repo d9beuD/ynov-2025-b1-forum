@@ -52,7 +52,7 @@ export class instance {
   }
 }
 
-export const api = new instance()
+export const _api = new instance()
 
 export default {
   auth,

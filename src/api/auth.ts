@@ -1,8 +1,8 @@
-import { api } from '.'
+import { _api } from '.'
 
 export default {
   login: async (email: string, password: string): Promise<unknown> => {
-    const response = await api.post('/auth', {
+    const response = await _api.post('/auth', {
       body: JSON.stringify({ email, password }),
     })
 

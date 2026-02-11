@@ -1,1 +1,21 @@
 @import 'tailwindcss';
+
+* {
+  border-color: var(--color-border);
+}
+
+#app {
+  @apply flex h-dvh max-h-dvh;
+}
+
+@layer base {
+  input[type='text'],
+  input[type='email'],
+  input[type='password'] {
+    @apply size-4 h-8 w-full rounded border bg-white px-2 py-2 placeholder:text-slate-500;
+  }
+}
+
+@theme {
+  --color-border: var(--color-slate-300);
+}

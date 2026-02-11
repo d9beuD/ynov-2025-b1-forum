@@ -1,5 +1,7 @@
 import HomePage from '@/pages/HomePage.vue'
 import LoginForm from '@/pages/LoginForm.vue'
+import TopicsPage from '@/pages/TopicsPage.vue'
+import TopicsShowPage from '@/pages/TopicsShowPage.vue'
 import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -16,6 +18,22 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => LoginForm,
+    },
+    {
+      path: '/topics',
+      children: [
+        {
+          path: '',
+          name: 'topics',
+          component: () => TopicsPage,
+        },
+        {
+          path: '/:id(\\d+)',
+          name: 'topics.show',
+          component: () => TopicsShowPage,
+          props: true,
+        },
+      ],
     },
   ],
 })

@@ -1,4 +1,5 @@
 import auth from './auth'
+import topic from './topic'
 import users from './users'
 
 const baseURL = 'http://localhost:8000/api'
@@ -57,4 +58,5 @@ export const _api = new instance()
 export default {
   auth,
   users,
+  topic,
 }
